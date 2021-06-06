@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import scrolledtext as sc
 from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
-import apoyo.colores as color 
+import apoyo.formato as formato 
 import pandas as pd
 from PIL import Image, ImageTk
 
@@ -12,7 +12,7 @@ class Ventana(Toplevel):
     #----------------------------------------------------------------------
     def __init__(self, ventana_anterior, alto = 300, ancho = 520, titulo = "Aplicativo de Sefa"):
         """Constructor especial de la clase Ventana.\n
-        Sirve para """
+        Sirve para generar nuevas ventanas en una desktop app"""
 
         self.ventana_anterior = ventana_anterior
         Toplevel.__init__(self)
@@ -26,7 +26,7 @@ class Ventana(Toplevel):
         self.geometry('%dx%d+%d+%d' % (self.ancho, self.alto, self.box_x, self.box_y))
         self.menu = MenuSefa(self)
         self.title(self.titulo)
-        self.config(background= color.fondo)
+        self.config(background= formato.fondo)
 
     #----------------------------------------------------------------------
     def desaparecer(self):
@@ -98,12 +98,12 @@ class Cuadro(Frame):
             #----------------------------------------------------------------------
             def Pasar_sobre_boton(e):
                 """"""
-                boton['bg'] = color.boton_cuando_pasa_cursor
+                boton['bg'] = formato.boton_cuando_pasa_cursor
         
             #----------------------------------------------------------------------
             def Dejar_boton(e):
                 """"""
-                boton['bg'] = color.boton_sin_que_pase_cursor
+                boton['bg'] = formato.boton_sin_que_pase_cursor
         
             boton.bind('<Enter>', Pasar_sobre_boton)
             boton.bind('<Leave>', Dejar_boton)
@@ -116,8 +116,8 @@ class Cuadro(Frame):
                         self.z, 
                         text= self.texto, 
                         command=self.funcion,
-                        fg = color.letras_del_boton,
-                        bg = color.boton_sin_que_pase_cursor,
+                        fg = formato.letras_del_boton,
+                        bg = formato.boton_sin_que_pase_cursor,
                         relief="flat",
                         cursor="hand2"
                         )
@@ -315,6 +315,114 @@ class Cuadro(Frame):
                 print('Error, el valor de i[0] es {row[0]}')
 
     #----------------------------------------------------------------------
+    def agregar_escenario(self, row, column, data_frame, funcion1, funcion2, funcion3):
+        """Método de la clase Cuadro. \n
+        Permite..."""
+
+        self.row = row
+        self.column = column
+        self.tabla = data_frame
+        self.funcion1 = funcion1
+        self.funcion2 = funcion2
+        self.funcion3 = funcion3
+
+        escenario_frame = Frame(self.z)
+        escenario_frame.grid(row=self.row, column=self.column)
+
+        # Construir encabezados:
+
+        columnas_de_tabla = self.tabla.columns.values.tolist()
+        indice_de_columnas = range(len(columnas_de_tabla))
+        elementos_columnas = {
+            'index': indice_de_columnas,
+            'columnas': columnas_de_tabla
+            }
+        tabla_columna = pd.DataFrame(elementos_columnas)
+        
+        encabezados_frame = Frame(escenario_frame)
+        encabezados_frame.pack()
+        for i,row in tabla_columna.iterrows():
+            encabezado = Label(
+                encabezados_frame, 
+                text=row[1],
+                font=formato.tipo_de_letra_tabla,
+                width= 25, 
+                height=1, 
+                relief=GROOVE,
+                bg=formato.fondo_encabezados_de_tabla
+                )
+            encabezado.grid(row=0, column=row[0])
+        opciones_label = Label(
+            encabezados_frame,
+            text='Opciones',
+            font=formato.tipo_de_letra_tabla,
+            width= 14, 
+            height=1, 
+            relief=GROOVE,
+            bg=formato.fondo_encabezados_de_tabla
+            )
+        opciones_label.grid(row=0, column=len(columnas_de_tabla)+1)
+        
+        # Construir tabla
+
+        valores_frame = Frame(escenario_frame)
+        valores_frame.pack()
+        for i, row in self.tabla.iterrows():
+            valores_subframe = Frame(valores_frame)
+            valores_subframe.pack()
+            lista_de_valores = row.values
+            indice_de_valores = range(len(lista_de_valores))
+            elementos_valores = {
+                'index': indice_de_valores,
+                'valores': lista_de_valores 
+            }
+            tabla_valor = pd.DataFrame(elementos_valores)
+            for i,row in tabla_valor.iterrows():
+                valor = Label(
+                    valores_subframe, 
+                    text=row[1],
+                    font=formato.tipo_de_letra_tabla,
+                    width=25, 
+                    height=1, 
+                    relief=GROOVE,
+                    bg= formato.fondo_valores_de_tabla)
+                valor.grid(row=0, column=row[0])
+            
+            # Agregar botones
+            
+            boton_ver = Label(
+                valores_subframe,
+                text='VER',
+                font=formato.tipo_de_letra_tabla,
+                width=4,
+                height=1,
+                relief=GROOVE
+            )
+            boton_ver.grid(row=0, column=len(lista_de_valores)+1)
+            argumento = lista_de_valores[0]
+            boton_ver.bind("<Button-1>",lambda e,argumento=argumento:self.funcion1(argumento))
+
+            boton_editar = Label(
+                valores_subframe,
+                text='EDIT',
+                font=formato.tipo_de_letra_tabla,
+                width=4,
+                height=1,
+                relief=GROOVE
+            )
+            boton_editar.grid(row=0, column=len(lista_de_valores)+2)
+
+            boton_eliminar = Label(
+                valores_subframe,
+                text='DEL',
+                font=formato.tipo_de_letra_tabla,
+                width=4,
+                height=1,
+                relief=GROOVE
+            )
+            boton_eliminar.grid(row=0, column=len(lista_de_valores)+3)
+
+    #----------------------------------------------------------------------
     def obtener_dato(self, n):
         """Método de la clase Cuadro. \n
         Permite recuperar la información registrada a través de los wingets agregados al Frame creado con la Clase Cuadro."""
@@ -372,8 +480,8 @@ class ScrollFrame(Frame):
 
         super().__init__(parent)
 
-        self.canvas = Canvas(self, borderwidth=0, background=color.fondo)
-        self.viewPort = Frame(self.canvas, background=color.fondo)
+        self.canvas = Canvas(self, borderwidth=0, background=formato.fondo)
+        self.viewPort = Frame(self.canvas, background=formato.fondo)
 
 
         self.vsb = Scrollbar(self, orient="vertical", command=self.canvas.yview)
@@ -404,5 +512,6 @@ class ScrollFrame(Frame):
         if (event.widget.winfo_width() != event.width) and (event.widget.winfo_height()  != event.height):
             canvas_width, canvas_height = event.width, event.height
             self.canvas.itemconfig(self.canvas_window, width = canvas_width, height = canvas_height)
+
 
 

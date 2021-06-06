@@ -11,6 +11,16 @@ class Ventana1(Ventana):
 
         c1 = Cuadro(self)
         c1.agregar_button(0,0,'Ir a ventana 2', self.ir)
+
+        c2 = Cuadro(self)
+
+        elementos = {
+            'Pokemon':['Pikachu', 'Squirtle', 'Bulbasaur', 'Charmander'],
+            'Tipo':['Electrico', 'Agua', 'Planta', 'Fuego']
+        }
+        dataframe = pd.DataFrame(elementos)
+
+        c2.agregar_escenario(dataframe)
     
     #----------------------------------------------------------------------
     def ir(self):
@@ -28,3 +38,4 @@ class Ventana2(Ventana):
 
         c1 = Cuadro(self)
         c1.agregar_button(0,0,'Volver a ventana 1', self.volver)
+    
