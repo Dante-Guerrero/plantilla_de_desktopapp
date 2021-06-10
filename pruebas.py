@@ -10,13 +10,13 @@ elementos = {
     'Tipo':['Electrico', 'Agua', 'Planta', 'Fuego'],
     'Tamaño':['Grande', 'Grande','Mediano', 'Pequeño'],
     'Entrenador':['Ash Ketchup', 'Gary Oak', 'Brenda Gonzales Orbegoso', 'Irene Guerrero'],
-    'Poder especial':['Tueno', 'Chorro de agua', 'Hojas navaja', 'Lanzallamas']
+    'Poder especial':['Trueno', 'Chorro de agua', 'Hojas navaja', 'Lanzallamas']
 }
 tabla = pd.DataFrame(elementos)
 
 view = Tk()
 
-c1 = Cuadro(view, True)
+c1 = Cuadro(view)
 c1.agregar_escenario(0, 0, tabla, printy, printy, printy)
 
 view.mainloop()

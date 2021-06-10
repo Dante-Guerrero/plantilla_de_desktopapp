@@ -319,6 +319,25 @@ class Cuadro(Frame):
         """Método de la clase Cuadro. \n
         Permite..."""
 
+        #----------------------------------------------------------------------
+        def Efecto_de_boton(boton):
+            """"""
+
+            #----------------------------------------------------------------------
+            def Pasar_sobre_boton(e):
+                """"""
+                boton['bg'] = formato.boton_cuando_pasa_cursor
+                boton['fg'] = formato.letras_del_boton_cuando_pasa_cursor
+        
+            #----------------------------------------------------------------------
+            def Dejar_boton(e):
+                """"""
+                boton['bg'] = formato.boton_sin_que_pase_cursor
+                boton['fg'] = formato.letras_del_boton
+        
+            boton.bind('<Enter>', Pasar_sobre_boton)
+            boton.bind('<Leave>', Dejar_boton)
+
         self.row = row
         self.column = column
         self.tabla = data_frame
@@ -346,6 +365,7 @@ class Cuadro(Frame):
                 encabezados_frame, 
                 text=row[1],
                 font=formato.tipo_de_letra_tabla,
+                fg = formato.letras_del_boton,
                 width= 25, 
                 height=1, 
                 relief=GROOVE,
@@ -356,6 +376,7 @@ class Cuadro(Frame):
             encabezados_frame,
             text='Opciones',
             font=formato.tipo_de_letra_tabla,
+            fg = formato.letras_del_boton,
             width= 14, 
             height=1, 
             relief=GROOVE,
@@ -396,34 +417,46 @@ class Cuadro(Frame):
                 valores_subframe,
                 text='VER',
                 font=formato.tipo_de_letra_tabla,
+                fg = formato.letras_del_boton,
                 width=4,
                 height=1,
-                relief=GROOVE
+                relief=GROOVE,
+                cursor="hand2",
+                bg=formato.boton_sin_que_pase_cursor
             )
             boton_ver.grid(row=0, column=len(lista_de_valores)+1)
             boton_ver.bind("<Button-1>",lambda e,argumento=argumento:self.funcion1(argumento))
+            Efecto_de_boton(boton_ver)
 
             boton_editar = Label(
                 valores_subframe,
                 text='EDIT',
                 font=formato.tipo_de_letra_tabla,
+                fg = formato.letras_del_boton,
                 width=4,
                 height=1,
-                relief=GROOVE
+                relief=GROOVE,
+                cursor="hand2",
+                bg=formato.boton_sin_que_pase_cursor
             )
             boton_editar.grid(row=0, column=len(lista_de_valores)+2)
             boton_editar.bind("<Button-1>",lambda e,argumento=argumento:self.funcion2(argumento))
+            Efecto_de_boton(boton_editar)
 
             boton_eliminar = Label(
                 valores_subframe,
                 text='DEL',
                 font=formato.tipo_de_letra_tabla,
+                fg = formato.letras_del_boton,
                 width=4,
                 height=1,
-                relief=GROOVE
+                relief=GROOVE,
+                cursor="hand2",
+                bg=formato.boton_sin_que_pase_cursor
             )
             boton_eliminar.grid(row=0, column=len(lista_de_valores)+3)
             boton_eliminar.bind("<Button-1>",lambda e,argumento=argumento:self.funcion3(argumento))
+            Efecto_de_boton(boton_eliminar)
 
     #----------------------------------------------------------------------
     def obtener_dato(self, n):
