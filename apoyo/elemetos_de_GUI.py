@@ -390,6 +390,8 @@ class Cuadro(Frame):
             
             # Agregar botones
             
+            argumento = lista_de_valores[0]
+
             boton_ver = Label(
                 valores_subframe,
                 text='VER',
@@ -399,7 +401,6 @@ class Cuadro(Frame):
                 relief=GROOVE
             )
             boton_ver.grid(row=0, column=len(lista_de_valores)+1)
-            argumento = lista_de_valores[0]
             boton_ver.bind("<Button-1>",lambda e,argumento=argumento:self.funcion1(argumento))
 
             boton_editar = Label(
@@ -411,6 +412,7 @@ class Cuadro(Frame):
                 relief=GROOVE
             )
             boton_editar.grid(row=0, column=len(lista_de_valores)+2)
+            boton_editar.bind("<Button-1>",lambda e,argumento=argumento:self.funcion2(argumento))
 
             boton_eliminar = Label(
                 valores_subframe,
@@ -421,6 +423,7 @@ class Cuadro(Frame):
                 relief=GROOVE
             )
             boton_eliminar.grid(row=0, column=len(lista_de_valores)+3)
+            boton_eliminar.bind("<Button-1>",lambda e,argumento=argumento:self.funcion3(argumento))
 
     #----------------------------------------------------------------------
     def obtener_dato(self, n):
